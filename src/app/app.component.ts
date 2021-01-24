@@ -24,7 +24,7 @@ export class AppComponent {
 
         this.OccupationFactor = Number(this.calcPremiumService.GetOccupationFactor(event.target.value));
            this.userdetails.MonthlyPremium = this.userdetails.age*this.userdetails.deathcoversum*this.OccupationFactor/12000;
-           this.userdetails.MonthlyPremium = Number(this.userdetails.MonthlyPremium);
+           this.userdetails.MonthlyPremium = Number(this.userdetails.MonthlyPremium.toFixed(2));
        
           //WebAPI call code
        // this.userdetails.occupation=event.target.value;
