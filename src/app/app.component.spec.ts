@@ -1,16 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import {CalcPremiumService} from './services/calc-premium.service'
+import { Http,ConnectionBackend,RequestOptions } from '@angular/http'
+import { By } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        FormsModule
+        
       ],
       declarations: [
         AppComponent
       ],
+      providers:[CalcPremiumService, Http,ConnectionBackend,RequestOptions]
     }).compileComponents();
   });
 
@@ -20,16 +27,22 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'CalculateDeathPremium'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('CalculateDeathPremium');
-  });
-
-  it('should render title', () => {
+  it('Calculate premium with valid occupation',()=>{
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('CalculateDeathPremium app is running!');
+
+    const testSelect = fixture.debugElement.query(By.css('select'));
+    const form = fixture.debugElement.query(By.css('form'))
+    testSelect.triggerEventHandler('change',{testSelect,form});
+
+    fixture.detectChanges();
+
+    const app= fixture.componentInstance;
+    //let result = app.calculateDeathPremium()
+
   });
+
+  
+  
 });
+

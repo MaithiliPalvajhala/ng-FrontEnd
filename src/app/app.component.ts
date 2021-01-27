@@ -14,7 +14,7 @@ export class AppComponent {
   returnValue:string="";
   OccupationFactor: any;
   occupations:string[];
-  userdetails = new User('',0,'',0,'',0);
+  userdetails = new User('',0,'','','','');
 
 
 
@@ -23,9 +23,11 @@ export class AppComponent {
       if(form.valid){
 
         this.OccupationFactor = Number(this.calcPremiumService.GetOccupationFactor(event.target.value));
-           this.userdetails.MonthlyPremium = this.userdetails.age*this.userdetails.deathcoversum*this.OccupationFactor/12000;
-           this.userdetails.MonthlyPremium = Number(this.userdetails.MonthlyPremium.toFixed(2));
-       
+        var cover = Number(this.userdetails.deathcoversum.replace(/[^0-9.-]+/g,""));
+           var monthPremium = this.userdetails.age*cover*this.OccupationFactor/12000;
+           monthPremium = Number(monthPremium.toFixed(2));
+           this.userdetails.MonthlyPremium= new Intl.NumberFormat('en-AU',{style: 'currency', currency:'AUD'}).format(monthPremium);
+            //document.getElementById(lblMonthly)?.innerHTML=this.userdetails.MonthlyPremium;
           //WebAPI call code
        // this.userdetails.occupation=event.target.value;
         //this.calcPremiumService.CalculateMonthlyPremium(event.target.value).subscribe(res=> {
@@ -68,6 +70,13 @@ export class AppComponent {
     }
 
     this.userdetails.age=age;
+  }
+
+  formatCurrency(event : any)
+  {
+    var format = new Intl.NumberFormat('en-AU',{style: 'currency', currency:'AUD'}).format(event.target.value);
+    this.userdetails.deathcoversum = format;
+    
   }
   
 }
